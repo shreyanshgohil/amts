@@ -1,62 +1,48 @@
 import mongoose from "mongoose";
 
-const RouteDetailsSchema = new mongoose.Schema({
-  ScheduleForRouteId: {
-    type:Number
+const RouteDetailsSchema = new mongoose.Schema(
+  {
+    routeId: {
+      type: Number,
+    },
+    routeCode: {
+      type: String,
+    },
+    customerRouteCode: {
+      type: String,
+    },
+    route: {
+      type: String,
+    },
+    startName: {
+      type: String,
+    },
+    endName: {
+      type: String,
+    },
+    startStopCode: {
+      type: Number,
+    },
+    endStopCode: {
+      type: Number,
+    },
+    startTime: {
+      type: String,
+    },
+    endTime: {
+      type: String,
+    },
+    days: {
+      type: String,
+    },
+    linetype: {
+      type: String,
+    },
+    Variant: {
+      type: String,
+    },
   },
-  Shift: {
-    type: String,
-    default: null,
-  },
-  busNo: {
-    type: Number,
-    default: 0,
-  },
-  firstStopCode: {
-    type: Number,
-  },
-  firstStopName: {
-    type: String,
-  },
-  lastStopCode: {
-    type: Number,
-  },
-  lastStopName: {
-    type: String,
-  },
-  routeCode: {
-    type: String,
-  },
-  routeDestination: {
-    type: String,
-  },
-  routeName: {
-    type: String,
-  },
-  routeVariant: {
-    type: String,
-  },
-  runCode: {
-    type: String,
-  },
-  scheduleForRouteCode: {
-    type: String,
-  },
-  schedulecode: {
-    type: String,
-  },
-  startTime: {
-    type: String,
-  },
-  stopTime: {
-    type: String,
-  },
-  tripSeqNumber: {
-    type: String,
-  },
-  dutyCode: {
-    type: String,
-  },
-},{ timestamps: true });
+  { timestamps: true }
+);
 
 export default mongoose.model("RouteDetails", RouteDetailsSchema);

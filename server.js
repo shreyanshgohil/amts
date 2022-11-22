@@ -4,7 +4,9 @@ import { config } from "dotenv";
 import {
   getAcessTokenHandler,
   getRouteTimeTableHandler,
+  setBusDetailsToMongo,
   setRouteDetailsSchemaToMongo,
+  getBusDetailsHandler
 } from "./libs/helper.js";
 
 // inits
@@ -27,6 +29,9 @@ startServer();
 const fetchInitialData = async () => {
   const tokenData = await getAcessTokenHandler();
   const routeData = await getRouteTimeTableHandler(tokenData);
+  const busData = await getBusDetailsHandler(tokenData);
+  // console.log(busData)
   setRouteDetailsSchemaToMongo(routeData);
+  setBusDetailsToMongo(routeData)
 };
 fetchInitialData();
