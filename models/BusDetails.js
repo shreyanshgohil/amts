@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const routeTitmeTableSchema = new mongoose.Schema({
+const BusDetailsSchema = new mongoose.Schema({
   variant: String,
   customerRouteCode: String,
   days: String,
@@ -16,4 +16,4 @@ const routeTitmeTableSchema = new mongoose.Schema({
   startTime: String,
 });
 
-export default mongoose.model("RouteTitmeTable", routeTitmeTableSchema);
+export default mongoose.model("BusDetails", BusDetailsSchema);

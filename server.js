@@ -1,18 +1,33 @@
-import express from "express";
-// import { ApolloServer } from "apollo-server-express";
-// import mongoose from "mongoose";
+import express, { json } from "express";
+import mongoose from "mongoose";
 import { config } from "dotenv";
-// import indexResolver from "./gql/resolvers/indexResolvers.js";
-// import indexTypedefs from "./gql/typedefs/indexTypeDefs.js";
-import https from "https";
-import { getAcessTokenHandler } from "./libs/helper.js";
+import {
+  getAcessTokenHandler,
+  getRouteTimeTableHandler,
+  setRouteDetailsSchemaToMongo,
+} from "./libs/helper.js";
 
 // inits
 const app = express();
 config();
 
-const fetchInitialData = () => {
-  const acessToken = getAcessTokenHandler();
+// for initial server connect and start database
+const startServer = async () => {
+  try {
+    mongoose.connect(process.env.MONGO_URL);
+    app.listen(5000, () => {
+      console.log("server is started and database is connected");
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+startServer();
+
+const fetchInitialData = async () => {
+  const tokenData = await getAcessTokenHandler();
+  const routeData = await getRouteTimeTableHandler(tokenData);
+  setRouteDetailsSchemaToMongo(routeData);
   // let options = {
   //   host: "jsonplaceholder.typicode.com",
   //   port: 443,
@@ -31,22 +46,3 @@ const fetchInitialData = () => {
   // reqGet.end();
 };
 fetchInitialData();
-
-// for initial server connect and start database
-// const startServer = async () => {
-//   try {
-//     const response = mongoose.connect(process.env.MONGO_URL);
-//     const apolloServer = new ApolloServer({
-//       typeDefs: indexTypedefs,
-//       resolvers: indexResolver,
-//     });
-//     await apolloServer.start();
-//     apolloServer.applyMiddleware({ app });
-//     app.listen(5000, () => {
-//       console.log("server is started and database is connected");
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-// startServer();

@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
-const busOnRouteSchema = new mongoose.model({
-  ScheduleForRouteId: Number,
+const RouteDetailsSchema = new mongoose.Schema({
+  ScheduleForRouteId: {
+    type:Number
+  },
   Shift: {
     type: String,
     default: null,
@@ -52,6 +54,9 @@ const busOnRouteSchema = new mongoose.model({
   tripSeqNumber: {
     type: String,
   },
-});
+  dutyCode: {
+    type: String,
+  },
+},{ timestamps: true });
 
-export default mongoose.model("BusOnRoute", busOnRouteSchema);
+export default mongoose.model("RouteDetails", RouteDetailsSchema);
