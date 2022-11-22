@@ -59,7 +59,7 @@ export const setRouteDetailsSchemaToMongo = async (routes) => {
     await Promise.all(
       await routesData.map(async (routeData) => {
         // const routeDetailsObj = new RouteDetails(routeData); // temp comment
-        // await routeDetailsObj.save(); // temp comment
+        // await routeDetailsObj.save(); // temp commen
       })
     );
   } catch (err) {
