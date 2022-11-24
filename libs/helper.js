@@ -1,5 +1,6 @@
 import https from "https";
 import RouteDetails from "../models/RouteDetails.js";
+import BusDetails from "../models/BusDetails.js";
 // Fetch the token from the AMTS api
 export const getAcessTokenHandler = () => {
   return new Promise((resolve, reject) => {
@@ -51,17 +52,16 @@ export const getRouteTimeTableHandler = (acessToken) => {
   });
 };
 
-// buggy
+// fetching the bus data from AMTS api
 export const getBusDetailsHandler = (acessToken) => {
   return new Promise((resolve, reject) => {
     const headers = {
-      "Content-Type": "application/json",
       Authorization: `${acessToken.token_type} ${acessToken.access_token}`,
     };
     const options = {
       host: "www.amts.co.in",
       port: 8081,
-      path: "api/BusesOnRoute?routeCode=151sh-D&Rows=20000&Page=0",
+      path: "/api/BusesOnRoute?Rows=1&Page=0",
       method: "GET",
       headers,
     };
@@ -78,23 +78,35 @@ export const getBusDetailsHandler = (acessToken) => {
   });
 };
 
-// setting the mongodb routes to the my mongodb databse
+// setting the routes to the my mongodb databse
 export const setRouteDetailsSchemaToMongo = async (routes) => {
   try {
-    // const { Data: routesData } = routes;
-    // await RouteDetails.collection.drop(); // temp comment
-    // await Promise.all(
-    //   await routesData.map(async (routeData) => {
-    //     const routeDetailsObj = new RouteDetails(routeData); 
-    //     await routeDetailsObj.save(); // temp commen
-    //   })
-    // );
+    const { Data: routesData } = routes;
+    await RouteDetails.collection.drop(); // temp comment
+    await Promise.all(
+      await routesData.map(async (routeData) => {
+        const routeDetailsObj = new RouteDetails(routeData);
+        await routeDetailsObj.save(); // temp commen
+      })
+    );
   } catch (err) {
     console.log(err);
   }
 };
 
-export const setBusDetailsToMongo = async (routes) =>{
-  const { Data: routesData } = routes;
-}
+// setting the bus details to the mongodb database
+export const setBusDetailsToMongo = async (busDetails) => {
+  try {
+    const { Data: busTrips } = busDetails;
+    await BusDetails.collection.drop();
+    await Promise.all(
+      busTrips.map(async (singleBusData) => {
+        const singleBusDataObj = new BusDetails(singleBusData);
+        await singleBusDataObj.save();
+      })
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
 export const getBusOnRouteHandler = () => {};
