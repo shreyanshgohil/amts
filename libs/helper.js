@@ -83,12 +83,7 @@ export const setRouteDetailsSchemaToMongo = async (routes) => {
   try {
     const { Data: routesData } = routes;
     await RouteDetails.collection.drop(); // temp comment
-    await Promise.all(
-      await routesData.map(async (routeData) => {
-        const routeDetailsObj = new RouteDetails(routeData);
-        await routeDetailsObj.save(); // temp commen
-      })
-    );
+    await RouteDetails.insertMany(routesData);
   } catch (err) {
     console.log(err);
   }
@@ -99,12 +94,7 @@ export const setBusDetailsToMongo = async (busDetails) => {
   try {
     const { Data: busTrips } = busDetails;
     await BusDetails.collection.drop();
-    await Promise.all(
-      busTrips.map(async (singleBusData) => {
-        const singleBusDataObj = new BusDetails(singleBusData);
-        await singleBusDataObj.save();
-      })
-    );
+    await BusDetails.insertMany(busTrips);
   } catch (err) {
     console.log(err);
   }
