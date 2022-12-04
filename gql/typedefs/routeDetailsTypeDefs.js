@@ -16,5 +16,6 @@ const routeDetailsTypeDefs = gql`
     linetype: String
     Variant: String
   }
+  
 `;
 export default routeDetailsTypeDefs;

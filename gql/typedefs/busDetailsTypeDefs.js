@@ -2,6 +2,7 @@ import { gql } from "apollo-server-express";
 
 const busDetailsTypeDefs = gql`
   type BusDetails {
+    _id:ID
     ScheduleForRouteId: Int
     Shift: String
     busNo: Int
@@ -21,8 +22,16 @@ const busDetailsTypeDefs = gql`
     tripSeqNumber: String
     dutyCode: String
   }
+  input userBusQuery {
+    startLocation: String
+    endLocation: String
+    busTime: String
+  }
+  type filterdBuses{
+    filterdBuses:[BusDetails]
+  }
   type Query {
-    getBusDetails: String
+    getBusDetails(busDetails: userBusQuery): [filterdBuses]
   }
 `;
 export default busDetailsTypeDefs;
