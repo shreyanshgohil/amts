@@ -6,8 +6,12 @@ import {
   getRouteTimeTableHandler,
   setBusDetailsToMongo,
   setRouteDetailsSchemaToMongo,
-  getBusDetailsHandler
+  getBusDetailsHandler,
 } from "./libs/helper.js";
+
+import indexTypedefs from "./gql/typedefs/indexTypeDefs.js";
+import indexResolver from "./gql/resolvers/indexResolvers.js";
+import { ApolloServer } from "apollo-server-express";
 
 // inits
 const app = express();
@@ -17,6 +21,12 @@ config();
 const startServer = async () => {
   try {
     mongoose.connect(process.env.MONGO_URL);
+    const apolloServer = new ApolloServer({
+      typeDefs: indexTypedefs,
+      resolvers: indexResolver,
+    });
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app });
     app.listen(5000, () => {
       console.log("server is started and database is connected");
     });
