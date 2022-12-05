@@ -1,3 +1,4 @@
+import { convertToDate } from "../../libs/helper.js";
 import RouteDetails from "../../models/RouteDetails.js";
 const busDetailsResolvers = {
   Query: {
@@ -5,6 +6,11 @@ const busDetailsResolvers = {
     getBusDetails: async (parent, args, context, info) => {
       try {
         const { startLocation, endLocation, busTime } = args.busDetails;
+        const userEnterdTime = convertToDate(busTime);
+        const loweEndOfUserEnterdTime = userEnterdTime;
+        const higherEndOfUserEnterdTime = userEnterdTime;
+        loweEndOfUserEnterdTime.setMinutes(userEnterdTime.getMinutes() - 20);
+        higherEndOfUserEnterdTime.setMinutes(userEnterdTime.getMinutes() + 20);
         const busDetailsWithRoute = await RouteDetails.aggregate([
           {
             $match: {
@@ -27,7 +33,7 @@ const busDetailsResolvers = {
                 $filter: {
                   input: "$data",
                   as: "sc",
-                  cond: { $eq: ["$$sc.startTime", busTime] },
+                  cond: { $gte: ["$$sc.startTime", loweEndOfUserEnterdTime] },
                 },
               },
             },
@@ -36,8 +42,8 @@ const busDetailsResolvers = {
             $match: { $expr: { $gte: [{ $size: "$filterdBuses" }, 1] } },
           },
         ]);
+
         return busDetailsWithRoute;
-        
       } catch (err) {
         console.log(err);
       }
