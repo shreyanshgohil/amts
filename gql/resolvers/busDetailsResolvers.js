@@ -42,7 +42,7 @@ const busDetailsResolvers = {
                     $and: [
                       {
                         $gte: [
-                          "$$sc.startTime",
+                          { $convert: { input: "$$sc.startTime", to: "date" } },
                           {
                             $convert: {
                               input: loweEndOfUserEnterdTime,
@@ -53,7 +53,7 @@ const busDetailsResolvers = {
                       },
                       {
                         $lte: [
-                          "$$sc.startTime",
+                          { $convert: { input: "$$sc.startTime", to: "date" } },
                           {
                             $convert: {
                               input: higherEndOfUserEnterdTime,
