@@ -27,10 +27,10 @@ const RouteDetailsSchema = new mongoose.Schema(
       type: Number,
     },
     startTime: {
-      type: String,
+      type: Date,
     },
     endTime: {
-      type: String,
+      type: Date,
     },
     days: {
       type: String,

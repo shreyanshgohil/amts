@@ -47,10 +47,10 @@ const BusDetailsSchema = new mongoose.Schema(
       type: String,
     },
     startTime: {
-      type: String,
+      type: Date,
     },
     stopTime: {
-      type: String,
+      type: Date,
     },
     tripSeqNumber: {
       type: String,

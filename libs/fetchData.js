@@ -1,6 +1,7 @@
 import https from "https";
 import RouteDetails from "../models/RouteDetails.js";
 import BusDetails from "../models/BusDetails.js";
+import { convertToDate } from "./helper.js";
 // Fetch the token from the AMTS api
 export const getAcessTokenHandler = () => {
   return new Promise((resolve, reject) => {
@@ -61,7 +62,7 @@ export const getBusDetailsHandler = (acessToken) => {
     const options = {
       host: "www.amts.co.in",
       port: 8081,
-      path: "/api/BusesOnRoute?Rows=1&Page=0",
+      path: "/api/BusesOnRoute?Rows=8880&Page=0",
       method: "GET",
       headers,
     };
@@ -82,8 +83,16 @@ export const getBusDetailsHandler = (acessToken) => {
 export const setRouteDetailsSchemaToMongo = async (routes) => {
   try {
     const { Data: routesData } = routes;
+    const UpdatedroutesData = [];
+    routesData.forEach((element) => {
+      UpdatedroutesData.push({
+        ...element,
+        startTime: convertToDate(element["startTime"]),
+        endTime: convertToDate(element["endTime"]),
+      });
+    });
     await RouteDetails.collection.drop(); // temp comment
-    await RouteDetails.insertMany(routesData);
+    await RouteDetails.insertMany(UpdatedroutesData);
   } catch (err) {
     console.log(err);
   }
@@ -93,8 +102,16 @@ export const setRouteDetailsSchemaToMongo = async (routes) => {
 export const setBusDetailsToMongo = async (busDetails) => {
   try {
     const { Data: busTrips } = busDetails;
+    const UpdatedBusTripsData = [];
+    busTrips.forEach((element) => {
+      UpdatedBusTripsData.push({
+        ...element,
+        startTime: convertToDate(element["startTime"]),
+        stopTime: convertToDate(element["stopTime"]),
+      });
+    });
     await BusDetails.collection.drop();
-    await BusDetails.insertMany(busTrips);
+    await BusDetails.insertMany(UpdatedBusTripsData);
   } catch (err) {
     console.log(err);
   }

@@ -38,7 +38,7 @@ startServer();
 
 // fetching the initial data and sending to the database
 const fetchInitialData = async () => {
-  const tokenData = await getAcessTokenHandler();
+  // const tokenData = await getAcessTokenHandler();
   // const routeData = await getRouteTimeTableHandler(tokenData);
   // const busData = await getBusDetailsHandler(tokenData);
   // setRouteDetailsSchemaToMongo(routeData);
