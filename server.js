@@ -7,7 +7,7 @@ import {
   setBusDetailsToMongo,
   setRouteDetailsSchemaToMongo,
   getBusDetailsHandler,
-} from "./libs/helper.js";
+} from "./libs/fetchData.js";
 
 import indexTypedefs from "./gql/typedefs/indexTypeDefs.js";
 import indexResolver from "./gql/resolvers/indexResolvers.js";
