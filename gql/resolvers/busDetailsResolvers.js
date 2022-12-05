@@ -7,10 +7,15 @@ const busDetailsResolvers = {
       try {
         const { startLocation, endLocation, busTime } = args.busDetails;
         const userEnterdTime = convertToDate(busTime);
-        const loweEndOfUserEnterdTime = userEnterdTime;
-        const higherEndOfUserEnterdTime = userEnterdTime;
-        loweEndOfUserEnterdTime.setMinutes(userEnterdTime.getMinutes() - 20);
-        higherEndOfUserEnterdTime.setMinutes(userEnterdTime.getMinutes() + 20);
+        let loweEndOfUserEnterdTime = userEnterdTime;
+        let higherEndOfUserEnterdTime = userEnterdTime;
+        loweEndOfUserEnterdTime = loweEndOfUserEnterdTime.setMinutes(
+          loweEndOfUserEnterdTime.getMinutes() - 20
+        );
+        higherEndOfUserEnterdTime = higherEndOfUserEnterdTime.setMinutes(
+          higherEndOfUserEnterdTime.getMinutes() + 20
+        );
+
         const busDetailsWithRoute = await RouteDetails.aggregate([
           {
             $match: {
@@ -33,7 +38,32 @@ const busDetailsResolvers = {
                 $filter: {
                   input: "$data",
                   as: "sc",
-                  cond: { $gte: ["$$sc.startTime", loweEndOfUserEnterdTime] },
+                  cond: {
+                    $and: [
+                      {
+                        $gte: [
+                          "$$sc.startTime",
+                          {
+                            $convert: {
+                              input: loweEndOfUserEnterdTime,
+                              to: "date",
+                            },
+                          },
+                        ],
+                      },
+                      {
+                        $lte: [
+                          "$$sc.startTime",
+                          {
+                            $convert: {
+                              input: higherEndOfUserEnterdTime,
+                              to: "date",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
                 },
               },
             },
