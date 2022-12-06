@@ -7,15 +7,17 @@ const busDetailsResolvers = {
       try {
         const { startLocation, endLocation, busTime } = args.busDetails;
         const userEnterdTime = convertToDate(busTime);
-        let loweEndOfUserEnterdTime = userEnterdTime;
-        let higherEndOfUserEnterdTime = userEnterdTime;
+        let loweEndOfUserEnterdTime = convertToDate(busTime);
+        let higherEndOfUserEnterdTime = convertToDate(busTime);
+
         loweEndOfUserEnterdTime = loweEndOfUserEnterdTime.setMinutes(
-          loweEndOfUserEnterdTime.getMinutes() - 20
-        );
-        higherEndOfUserEnterdTime = higherEndOfUserEnterdTime.setMinutes(
-          higherEndOfUserEnterdTime.getMinutes() + 20
+          userEnterdTime.getMinutes() - 20
         );
 
+        higherEndOfUserEnterdTime = higherEndOfUserEnterdTime.setMinutes(
+          userEnterdTime.getMinutes() + 20
+        );
+        
         const busDetailsWithRoute = await RouteDetails.aggregate([
           {
             $match: {
