@@ -12,7 +12,7 @@ import {
 import indexTypedefs from "./gql/typedefs/indexTypeDefs.js";
 import indexResolver from "./gql/resolvers/indexResolvers.js";
 import { ApolloServer } from "apollo-server-express";
-
+import cron from "node-cron"
 // inits
 const app = express();
 config();
@@ -36,12 +36,16 @@ const startServer = async () => {
 };
 startServer();
 
+cron.schedule("0 0 * * *", function() {
+  console.log("running a task every 10 second");
+});
+
 // fetching the initial data and sending to the database
 const fetchInitialData = async () => {
-  // const tokenData = await getAcessTokenHandler();
-  // const routeData = await getRouteTimeTableHandler(tokenData);
-  // const busData = await getBusDetailsHandler(tokenData);
-  // setRouteDetailsSchemaToMongo(routeData);
-  // setBusDetailsToMongo(busData)
+  const tokenData = await getAcessTokenHandler();
+  const routeData = await getRouteTimeTableHandler(tokenData);
+  const busData = await getBusDetailsHandler(tokenData);
+  setRouteDetailsSchemaToMongo(routeData);
+  setBusDetailsToMongo(busData)
 };
 fetchInitialData();
